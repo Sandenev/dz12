@@ -1,0 +1,20 @@
+version: '3'
+services:
+  package:
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    volumes:
+      - app-volume:/home/App42PaaS-Java-MySQL-Sample/target/
+  prod:
+    build:
+      context: ./prod
+      dockerfile: Dockerfile
+    depends_on:
+      - package
+    ports:
+      - "8888:8888"
+    volumes:
+      - app-volume:/usr/local/tomcat/webapps/
+volumes:
+  app-volume:
