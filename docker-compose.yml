@@ -13,7 +13,7 @@ services:
     depends_on:
       - package
     ports:
-      - "8888:8888"
+      - "8888:8080"
     volumes:
       - app-volume:/usr/local/tomcat/webapps/
 volumes:
