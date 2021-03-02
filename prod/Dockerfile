@@ -8,5 +8,8 @@ WORKDIR $CATALINA_HOME
 RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.43/bin/apache-tomcat-9.0.43.tar.gz -O /tmp/tomcat.tar.gz
 RUN cd /tmp && tar xvfz tomcat.tar.gz
 RUN cp -Rv /tmp/apache-tomcat-9.0.43/* /usr/local/tomcat/
+WORKDIR /usr/local/tomcat/
+RUN mkdir /ROOT/
+COPY ./Config.properties /usr/local/tomcat/ROOT/
 EXPOSE 8080
 CMD ["catalina.sh", "run"]

@@ -1,20 +1,43 @@
 version: '3'
 services:
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secpass
+      MYSQL_DATABASE: 42db
+      MYSQL_USER: 42db_user
+      MYSQL_PASSWORD: secpass
+    healthcheck:
+      test: mysql --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD -e 'SHOW DATABASES;'
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-volume:/var/lib/mysql
+    networks:
+      - network
+
   package:
     build:
       context: ./build
       dockerfile: Dockerfile
     volumes:
-      - app-volume:/App42PaaS-Java-MySQL-Sample/target/
+      - app-volume:/home/user/App42PaaS-Java-MySQL-Sample/target/
+
   prod:
     build:
       context: ./prod
       dockerfile: Dockerfile
     depends_on:
-      - package
+      - database
     ports:
-      - "8888:8080"
+      - "888:8080"
     volumes:
       - app-volume:/usr/local/tomcat/webapps/
+
+    networks:
+      - network
 volumes:
+  db-volume:
   app-volume:
+networks:
+  network:
